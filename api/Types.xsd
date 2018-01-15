@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Types" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://danicapension.se/api/common/types"
+           xmlns:ty="http://danicapension.se/api/common/types"
+           elementFormDefault="qualified" 
+           attributeFormDefault="unqualified">
+
+  <xs:simpleType name="returnCode">
+    <xs:annotation>
+      <xs:documentation>
+        1		Ok
+        2		Application error
+        3		Format error
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ok"/>
+      <xs:enumeration value="ApplicationError"/>
+      <xs:enumeration value="FormatError"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

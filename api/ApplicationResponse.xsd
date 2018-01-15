@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ApplicationResponse" 
+           targetNamespace="http://danica.se/api/common/applicationresponse" 
+           xmlns="http://danica.se/api/common/applicationresponse"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ar="http://danica.se/api/common/applicationresponse"
+           xmlns:ty="http://danicapension.se/api/common/types" 
+           elementFormDefault="qualified">
+  <xs:import namespace="http://danicapension.se/api/common/types" schemaLocation="Types.xsd"/>
+  
+  <xs:element name="ApplicationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Message" minOccurs="1" maxOccurs="1" type="xs:string" />
+        <xs:element name="ReturnCode" minOccurs="1" maxOccurs="1" type="ty:returnCode" />
+        <xs:element name="Errors" minOccurs="1" maxOccurs="1" type="ar:Errors" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Errors">
+    <xs:sequence>
+      <xs:element name="Error" minOccurs="1" maxOccurs="unbounded" type="ar:Error" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Error">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Property" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Message" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

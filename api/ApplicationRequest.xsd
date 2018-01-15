@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ApplicationRequest"
+           targetNamespace="http://danica.se/api/common/applicationrequest"
+           xmlns="http://danica.se/api/common/applicationrequest"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ar="http://danica.se/api/common/applicationrequest"
+           xmlns:ty="http://danicapension.se/api/common/types" 
+           elementFormDefault="qualified">
+  <xs:import namespace="http://danicapension.se/api/common/types" schemaLocation="Types.xsd"/>
+  
+  <xs:element name="ApplicationRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TaxCode" minOccurs="1" maxOccurs="1" type="ar:TaxCode" />
+        <xs:element name="Custodian" minOccurs="1" maxOccurs="1" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              Depåinstitutets organisationsnummer
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Fee" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PremiumFee" minOccurs="1" maxOccurs="1" type="xs:decimal" />
+              <xs:element name="CapitalFee" minOccurs="1" maxOccurs="1" type="xs:decimal" />
+              <xs:element name="YearlyFee" minOccurs="1" maxOccurs="1" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Premium" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Att ange en premie är inte obligatoriskt, den kan utelämnas om den inte är känd. Månadsvis- och engångspremie kan anges tillsammans
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MonthlyPayment" minOccurs="0" maxOccurs="1" type="xs:int" />
+              <xs:element name="SinglePayment" minOccurs="0" maxOccurs="1" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DefaultPensionPayment" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              Default pensionsutbetalning. Enbart möjlig att ange för skatteklass Pensionsförsäkring, för Kapitalförsäkring görs uttag på begäran
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="StartAtAge" minOccurs="1" maxOccurs="1"  type="xs:int" />
+              <xs:element name="Years" minOccurs="1" maxOccurs="1" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PolicyHolder" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Holder" minOccurs="1" maxOccurs="1" type="ar:LegalEntity" />
+              <xs:element name="Autogiro" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="BankAccountNumber" minOccurs="1" maxOccurs="1" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Insured" minOccurs="1" maxOccurs="1" type="ar:LegalEntity" />
+        <xs:element name="InsuredIsPlacementEntitled" minOccurs="1" maxOccurs="1" type="xs:boolean" />
+        <xs:element name="BeneficiaryClause" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Type" minOccurs="1" maxOccurs="1" type="ar:BeneficiaryClauseType" />
+              <xs:element name="Other" minOccurs="0" maxOccurs="1" type="xs:string" />
+              <xs:element name="Disposition" minOccurs="1" maxOccurs="1" type="xs:boolean" />
+              <xs:element name="PrivatePropertyType" minOccurs="1" maxOccurs="1" type="ar:PrivatePropertyType" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="InformationToDanica" minOccurs="0" maxOccurs="1" type="xs:string" />
+        <xs:element name="Kyc">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SigningType" minOccurs="1" maxOccurs="1" type="ar:SigningType" />
+              <xs:element name="InsurancePurpose" minOccurs="1" maxOccurs="1" type="ar:InsurancePurposeType" />
+              <xs:element name="PaymentSource">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Source" minOccurs="1" maxOccurs="unbounded" type="ar:PaymentSourceType" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="YearlyPaymentAmount" minOccurs="1" maxOccurs="1" type="ar:YearlyPaymentAmountType" />
+              <xs:element name="CorporateKyc" minOccurs="0" maxOccurs="1" type="ar:CorporateKyc" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Advicer" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Code" minOccurs="1" maxOccurs="1" type="xs:string" />
+              <xs:element name="Phone" minOccurs="1" maxOccurs="1" type="xs:string" />
+              <xs:element name="Email" minOccurs="1" maxOccurs="1"  type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="TaxCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Pensionsförsäkring"/>
+      <xs:enumeration value="Kapitalförsäkring"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="LegalEntity">
+    <xs:sequence>
+      <xs:element name="Name" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Identification" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Citizenship" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Address" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="ZipCode" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="City" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Country" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Phone" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Email" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="Pep" minOccurs="0" maxOccurs="1"  type="ar:Pep" />
+      <xs:element name="UsPerson" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Tin" minOccurs="0" maxOccurs="1" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NoneSwedishTaxResident">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Question1" minOccurs="1" maxOccurs="1" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Pep">
+    <xs:sequence>
+      <xs:element name="Question1" minOccurs="1" maxOccurs="1" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="BeneficiaryClauseType">
+    <xs:annotation>
+      <xs:documentation>
+        F00 - Oförordnat
+        F01 - Enbart för skatteklass Pensionförsäkring
+        F02 - Enbart för skatteklass Pensionförsäkring
+        F03 - Enbart för skatteklass Pensionförsäkring
+        F04 - Annan, BeneficiaryClause.Other måst anges
+        F10 - Enbart för skatteklass Kapitalförsäkring
+        F11 - Enbart för skatteklass Kapitalförsäkring
+        F12 - Enbart för skatteklass Kapitalförsäkring
+        F13 - Enbart för skatteklass Kapitalförsäkring
+        F21 - Enbart för skatteklass Kapitalförsäkring
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="F00"/>
+      <xs:enumeration value="F01"/>
+      <xs:enumeration value="F02"/>
+      <xs:enumeration value="F03"/>
+      <xs:enumeration value="F04"/>
+      <xs:enumeration value="F10"/>
+      <xs:enumeration value="F11"/>
+      <xs:enumeration value="F12"/>
+      <xs:enumeration value="F13"/>
+      <xs:enumeration value="F21"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PrivatePropertyType">
+    <xs:annotation>
+      <xs:documentation>
+        Enskild egendom:
+        TrueWith    - Ja, med forfoganderatt
+        TrueWithout - Ja, utan forfoganderatt
+        False       - Nej, ingen forfoganderatt
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TrueWith"/>
+      <xs:enumeration value="TrueWithout"/>
+      <xs:enumeration value="False"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SigningType">
+    <xs:annotation>
+      <xs:documentation>
+        Hur tecknades försäkringen:
+        Advicer   - Tecknad med förmedlare eller rådgivare
+        Distance  - Tecknad på distans
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Advicer"/>
+      <xs:enumeration value="Distance"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InsurancePurposeType">
+    <xs:annotation>
+      <xs:documentation>
+        Syftet med försäkringen:
+        Pension     - Pensionssparande
+        Objective   - Målsparande
+        Investments - Placering
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Pension"/>
+      <xs:enumeration value="Objective"/>
+      <xs:enumeration value="Investments"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PaymentSourceType">
+    <xs:annotation>
+      <xs:documentation>
+        Inbetalningarna kommer ifrån:
+        SalaryOrPension - Lön eller pension
+        Savings         - Sparande
+        HeritageOrGift  - Arv eller gåva
+        PropertySale    - Fastighetsförsäljning
+        Other           - Annat
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SalaryOrPension"/>
+      <xs:enumeration value="Savings"/>
+      <xs:enumeration value="HeritageOrGift"/>
+      <xs:enumeration value="PropertySale"/>
+      <xs:enumeration value="Other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="YearlyPaymentAmountType">
+    <xs:annotation>
+      <xs:documentation>
+        Planerad insättning per år:
+        Amount0To100000	       - 0-100 000
+        Amount100001To500000	 - 100 001-500 000
+        Amount500001To1000000  - 500 001-1 000 000
+        Amount1000001To5000000 - 1 000 001-5 000 000
+        AmountAbove5000000		 - Above 5 000 000
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Amount0To100000"/>
+      <xs:enumeration value="Amount100001To500000"/>
+      <xs:enumeration value="Amount500001To1000000"/>
+      <xs:enumeration value="Amount1000001To5000000"/>
+      <xs:enumeration value="AmountAbove5000000"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="CompanyType">
+    <xs:annotation>
+      <xs:documentation>
+        Typ av företag:
+        ActiveBusiness          - Bedriver aktiv näringsverksamhet
+        FinancialInstitution    - Finansiellt institut
+        ListedCompany           - Börsnoterat bolag
+        NewlyStartedBusiness    - Nystartat företag
+        CharitableOrganization  - Välgörenhetsorganisation
+        Other                   - Annat bolag – blankett: Egenförsäkran skattehemvist – Företag måste bifogas
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ActiveBusiness"/>
+      <xs:enumeration value="FinancialInstitution"/>
+      <xs:enumeration value="ListedCompany"/>
+      <xs:enumeration value="NewlyStartedBusiness"/>
+      <xs:enumeration value="CharitableOrganization"/>
+      <xs:enumeration value="Other"/>
+    </xs:restriction>
+  </xs:simpleType>
+      
+  <xs:complexType name="CorporateKyc">
+    <xs:sequence>
+      <xs:element name="SniCode" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="MissingSniCode" minOccurs="1" maxOccurs="1" type="xs:boolean" />
+      <xs:element name="CompanyType" minOccurs="1" maxOccurs="1" type="ar:CompanyType" />
+      <xs:element name="HasBeneficialOwners" minOccurs="1" maxOccurs="1" type="xs:boolean" />
+      <xs:element name="BeneficialOwners" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="BeneficialOwner" minOccurs="1" maxOccurs="unbounded" type="ar:BeneficialOwner" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="JuridicalPersonOwner" minOccurs="1" maxOccurs="1" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BeneficialOwner">
+    <xs:sequence>
+      <xs:element name="Owner" minOccurs="1" maxOccurs="1" type="ar:LegalEntity" />
+      <xs:element name="Ownership" minOccurs="1" maxOccurs="1" type="xs:string" />
+      <xs:element name="OwnershipPercentage" minOccurs="1" maxOccurs="1" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>
